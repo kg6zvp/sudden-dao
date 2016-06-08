@@ -1,6 +1,7 @@
 package enterprises.mccollum.utils.genericentityejb;
 
 import java.lang.reflect.Field;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -187,5 +188,42 @@ public class GenericPersistenceManager<T, K> {
 			q.setParameter(field.getKey(), field.getValue());
 		}
 		return q.getResultList();
+	}
+	
+	private List<Field> getNonNullFields(T keyObject){
+		Field[] members = cArg.getDeclaredFields();
+		List<Field> importantFields = new LinkedList<>();
+		for(Field member : members){
+			try {
+				member.setAccessible(true);
+				if(!member.getType().isPrimitive()){
+					Object val = member.get(keyObject);
+					if(val != null)
+						importantFields.add(member);
+				}
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		return importantFields;
+	}
+	
+	public List<Object> getPropertyList(T keyObject){
+		List list = new LinkedList();
+		List<Field> importantFields = getNonNullFields(keyObject);
+		if(importantFields.size() > 0){
+			Field fiq = importantFields.get(0);
+			fiq.setAccessible(true);
+			for(T data : getAll()){
+				try {
+					list.add(fiq.get(data));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
 	}
 }
