@@ -13,7 +13,7 @@ Use Cases:
 
 			keyRock.setColor(Color.BLUE);
 
-			List<Rock> blueRocks rockManager.getMatching(keyRock); //this assumes any other member variables in this class are null
+			List<Rock> blueRocks = rockManager.getMatching(keyRock); //this assumes any other member variables in this class are null
 
 	2.) I want to retrieve an object's key //not as sure why you might want this
 
