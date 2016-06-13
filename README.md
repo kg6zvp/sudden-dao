@@ -1,7 +1,7 @@
 # GenericEntityEJB
 EJB abstraction for EntityManager in JPA 2 environments
 
-Manually composing JQPL queries is often annoying when we want to spend more time focusing on the business logic of an application. To that end, I created this simple project.
+Manually composing JPQL queries is often annoying when we want to spend more time focusing on the business logic of an application. To that end, I created this simple project.
 
 Use Cases:
 
