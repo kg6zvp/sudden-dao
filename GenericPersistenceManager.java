@@ -65,21 +65,7 @@ public class GenericPersistenceManager<T, K> {
 	
 	@SuppressWarnings("unchecked")
 	public K getId(T data) {
-		Field[] members = cArg.getDeclaredFields();
-		for(Field member : members){
-			try {
-				//System.out.printf("Processing field: %s\n", member.getName());
-				member.setAccessible(true);
-				if(member.getDeclaredAnnotationsByType(Id.class).length != 0){
-					return (K)member.get(data);
-				}
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (Exception e){
-				e.printStackTrace();
-			}
-		}
-		return null;
+		return (K)em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(data);
 	}
 
 	/**
