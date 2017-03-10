@@ -1,6 +1,8 @@
 package enterprises.mccollum.utils.genericentityejb;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -155,7 +157,7 @@ public class GenericPersistenceManager<T, K> {
 				member.setAccessible(true);
 				if(!member.getType().isPrimitive()){
 					Object val = member.get(keyObject);
-					if(val != null)
+					if(val != null && !Modifier.isFinal(member.getModifiers()) && !Modifier.isStatic(member.getModifiers()) && !(val instanceof Collection))
 						importantFields.put(member.getName(), val);
 				}
 			} catch (SecurityException e) {
@@ -165,8 +167,14 @@ public class GenericPersistenceManager<T, K> {
 			}
 		}
 		String queryString = getSelectAllQueryString();
+		int run = 0;
 		for(Map.Entry<String, Object> field : importantFields.entrySet()){
-			queryString += String.format(" where data.%s = :%s", field.getKey(), field.getKey());
+			if(run == 0){
+				queryString += String.format(" where data.%s = :%s", field.getKey(), field.getKey());
+			}else{
+				queryString += String.format(" and data.%s = :%s", field.getKey(), field.getKey());
+			}
+			++run;
 		}
 		System.out.printf("Composed query string:\n%s\n", queryString);
 		Query q = em.createQuery(queryString);
