@@ -32,7 +32,7 @@ public class GenericPersistenceManager<T, K> {
 	String tableName;
 	
 	@PersistenceContext
-	EntityManager em;
+	protected EntityManager em;
 	
 	public GenericPersistenceManager(Class<T> cArg, String tableName){
 		this.cArg = cArg;
