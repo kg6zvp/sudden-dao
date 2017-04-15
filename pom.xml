@@ -3,7 +3,7 @@
 	<properties>
 		<pj.gid>enterprises.mccollum.utils</pj.gid>
 		<pj.aid>genericentityejb</pj.aid>
-		<pj.ver>1.0.5-SNAPSHOT</pj.ver>
+		<pj.ver>1.0.6-SNAPSHOT</pj.ver>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
