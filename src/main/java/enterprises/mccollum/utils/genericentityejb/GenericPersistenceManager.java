@@ -28,8 +28,8 @@ import javax.persistence.Query;
  * @param <K> The type used for the Entity's {@link Id}
  */
 public class GenericPersistenceManager<T, K> {
-	Class<T> cArg;
-	String tableName;
+	protected Class<T> cArg;
+	protected String tableName;
 	
 	@PersistenceContext
 	protected EntityManager em;

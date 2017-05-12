@@ -19,6 +19,8 @@ Use Cases:
 
 		rockManager.getId(myObject);
 
+	3.) Generate a JPQL query from an object. Sometimes you know you will want to run a query frequently on a database. Incurring the overhead of invoking my query generator every time you want to hit the database is ridiculous. Simply inspect the lines in stdout containing `Composed query string:` if you want to see what query a given object will give you and write a function and/or create a named query. Good luck.
+
 Getting started:
 
 	1.) Create a new EJB which you would normally inject an EntityManager into which subclasses GenericPersistenceManager<T, K> (where T is the Type of class it will manage and K is the Type of your Entity's @Id field)
