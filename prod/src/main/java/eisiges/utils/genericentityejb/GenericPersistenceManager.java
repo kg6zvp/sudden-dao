@@ -1,4 +1,4 @@
-package enterprises.mccollum.utils.genericentityejb;
+package eisiges.utils.genericentityejb;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
