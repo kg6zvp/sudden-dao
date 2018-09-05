@@ -15,5 +15,6 @@
 
 	<modules>
 		<module>crud</module>
+		<module>find</module>
 	</modules>
 </project>
