@@ -15,7 +15,7 @@ public class FindBuilder<T> {
 	protected CriteriaQuery<T> criteriaQuery;
 	protected Root<T> queryRoot;
 
-	public FindBuilder(Class<T> cArg, EntityManager em) {
+	FindBuilder(Class<T> cArg, EntityManager em) {
 		this.cArg = cArg;
 		this.em = em;
 
@@ -45,7 +45,11 @@ public class FindBuilder<T> {
 		};
 	}
 
-	public TypedQuery build() {
+	/**
+	 * Build a query that can be run
+	 * @return a {@link TypedQuery}
+	 */
+	public TypedQuery<T> build() {
 		return this.em.createQuery(criteriaQuery);
 	}
 }
