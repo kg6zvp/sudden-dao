@@ -1,4 +1,4 @@
-package eisiges.crud;
+package eisiges.find;
 
 import io.thorntail.test.ThorntailTestRunner;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 @RunWith(ThorntailTestRunner.class)
-public class CrudTest {
+public class FindTest {
 	@Inject
 	UserGEM users;
 
@@ -29,34 +29,37 @@ public class CrudTest {
 
 	@Test
 	@Transactional
-	public void testCreate() {
-		Long userId = users.persist(UserModel
+	public void testBasicFind() {
+		UserModel hmUser = UserModel
 		    .builder()
 		    .username("hmcgroin")
 		    .fullName("Holden McGroin")
 		    .birthDate(Calendar.getInstance())
-		    .build()).getId();
+		    .build();
+		em.persist(hmUser);
+		em.flush();
+		em.clear();
 
-		assertNotNull(em.find(UserModel.class, userId));
+		assertTrue(users.find().build().setMaxResults(1).getSingleResult().equals(hmUser));
 	}
 
 	@Test
 	@Transactional
-	public void testGet() {
-		UserModel bdUser = UserModel
+	public void testBasicParameterizedFind() {
+		UserModel mhUser = UserModel
 		    .builder()
-		    .username("bdover")
-		    .fullName("Ben Dover")
+		    .username("mhawk")
+		    .fullName("Mike Hawk")
 		    .birthDate(Calendar.getInstance())
 		    .build();
-		em.persist(bdUser);
+		em.persist(mhUser);
 		em.flush();
 		em.clear();
 
-		assertNotNull(users.get(bdUser.getId()));
+		assertTrue(users.find(UserModel.class).build().setMaxResults(1).getSingleResult().equals(mhUser));
 	}
 
-	@Test
+/*	@Test
 	@Transactional
 	public void testFindMatchingWithString() {
 		UserModel it = UserModel.builder()
@@ -71,6 +74,6 @@ public class CrudTest {
 
 		UserModel found = users.getMatching(keyObject).get(0);
 		assertTrue(found.equals(it));
-	}
+	}//*/
 }
 

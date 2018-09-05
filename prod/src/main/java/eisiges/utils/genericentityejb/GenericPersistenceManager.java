@@ -45,8 +45,8 @@ public class GenericPersistenceManager<T, K> {
 	
 	/**
 	 * Check whether or not an object with the given key (id) is in the database
-	 * @param key
-	 * @return
+	 * @param key the primary key whose existence to check for
+	 * @return true if it exists in the database, falst if not
 	 */
 	public boolean containsKey(K key){
 		if(key == null)
@@ -56,8 +56,8 @@ public class GenericPersistenceManager<T, K> {
 	
 	/**
 	 * Persist and return the object
-	 * @param data
-	 * @return
+	 * @param data the entity instance being persisted
+	 * @return the managed entity instance
 	 */
 	public T persist(T data){
 		em.persist(data);
@@ -71,31 +71,49 @@ public class GenericPersistenceManager<T, K> {
 	}
 
 	/**
-	 * Save an object to the database
-	 * @param data
-	 * @return
+	 * Update an object in the database
+	 * @param data The entity to be updated/saved
+	 * @return the managed entity
 	 */
 	public T save(T data){
 		return em.merge(data);
 	}
+
+	/**
+	 * Create a {@link FindBuilder} instance for performing a find
+	 * @return a builder for a find query
+	 */
+	public FindBuilder<T> find() {
+		return this.find(cArg);
+	}
+
+	/**
+	 * Create a {@link FindBuilder} instance for performing a find with a given entity type
+	 * @param type the class of the entity to be found
+	 * @return a builder for a find query
+	 */
+	public <X> FindBuilder<X> find(Class<X> type) {
+		return new FindBuilder<X>(type, em);
+	}
+
 	/**
 	 * Retrieve an object from the database with the given key (id)
-	 * @param key
-	 * @return
+	 * @param key primary key of the object to be retrieved
+	 * @return the entity
 	 */
 	public T get(K key){
 		return em.find(cArg, key);
 	}
 	/**
 	 * Remove an object from the database
-	 * @param data
+	 * @param data object to be removed
 	 */
 	public void remove(T data){
 		em.remove(em.merge(data));
 	}
 	/**
 	 * Save a list of objects to the database
-	 * @param data
+	 * @param data {@link List} of objects to be saved
 	 */
 	public void saveAll(List<T> data){
 		for(T d : data)
@@ -103,7 +121,7 @@ public class GenericPersistenceManager<T, K> {
 	}
 	/**
 	 * Remove a list of objects from the database
-	 * @param data
+	 * @param data {@link List} of objects to be removed
 	 */
 	public void removeAll(List<T> data){
 		for(T d : data)
@@ -111,7 +129,7 @@ public class GenericPersistenceManager<T, K> {
 	}
 	/**
 	 * Retrieve a list of {@link T}, all of the ones in the database
-	 * @return
+	 * @return {@link List} of all {@link T} in the database
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getAll(){
@@ -121,7 +139,7 @@ public class GenericPersistenceManager<T, K> {
 	
 	/**
 	 * Checks whether or not the table is empty
-	 * @return
+	 * @return true if empty, false if not
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean isTableEmpty(){
@@ -130,14 +148,14 @@ public class GenericPersistenceManager<T, K> {
 	}
 	/**
 	 * private helper method
-	 * @return
+	 * @return Query for selecting all
 	 */
 	private Query getSelectAllQuery(){
 		return em.createQuery(getSelectAllQueryString());
 	}
 	/**
 	 * private helper method
-	 * @return
+	 * @return Query string for select all
 	 */
 	private String getSelectAllQueryString(){
 		return "SELECT data FROM "+tableName+" data";
@@ -145,8 +163,8 @@ public class GenericPersistenceManager<T, K> {
 	
 	/**
 	 * Retrieve a class from the database whose non-null instance variables match those of the class in the database
-	 * @param keyObject
-	 * @return
+	 * @param keyObject the object to match
+	 * @return {@link List} of objects which match the keyObject
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> getMatching(T keyObject){
