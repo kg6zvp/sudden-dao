@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Calendar;
+import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -59,21 +60,41 @@ public class FindTest {
 		assertTrue(users.find(UserModel.class).build().setMaxResults(1).getSingleResult().equals(mhUser));
 	}
 
-/*	@Test
+	@Test
 	@Transactional
-	public void testFindMatchingWithString() {
+	public void testSortBy() {
 		UserModel it = UserModel.builder()
 		    .username("pfile")
 		    .fullName("Peter File")
 		    .birthDate(Calendar.getInstance())
 		    .build();
 		em.persist(it);
+
+		UserModel wf = UserModel.builder()
+		    .username("wfeltersnatch")
+		    .fullName("Wenton Feltersnatch")
+		    .birthDate(Calendar.getInstance())
+		    .build();
+		em.persist(wf);
+
+		UserModel hb = UserModel.builder()
+		    .username("hbush")
+		    .fullName("Harry Bush")
+		    .birthDate(Calendar.getInstance())
+		    .build();
+		em.persist(hb);
+
 		em.flush();
 
-		UserModel keyObject = UserModel.builder().fullName("Peter File").build();
-
-		UserModel found = users.getMatching(keyObject).get(0);
-		assertTrue(found.equals(it));
-	}//*/
+		List<UserModel> foundUsersAsc = users.find().sortBy(UserModel_.fullName).ascending().build().getResultList();
+		assertTrue(hb.equals(foundUsersAsc.get(0)));
+		assertTrue(it.equals(foundUsersAsc.get(1)));
+		assertTrue(wf.equals(foundUsersAsc.get(2)));
+		
+		List<UserModel> foundUsersDesc = users.find().sortBy(UserModel_.fullName).descending().build().getResultList();
+		assertTrue(wf.equals(foundUsersDesc.get(0)));
+		assertTrue(it.equals(foundUsersDesc.get(1)));
+		assertTrue(hb.equals(foundUsersDesc.get(2)));
+	}
 }
 
