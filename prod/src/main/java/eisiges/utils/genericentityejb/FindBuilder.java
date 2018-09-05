@@ -5,6 +5,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 
 public class FindBuilder<T> {
 	protected Class<T> cArg;
@@ -21,6 +22,27 @@ public class FindBuilder<T> {
 		this.criteriaBuilder = this.em.getCriteriaBuilder();
 		this.criteriaQuery = this.criteriaBuilder.createQuery(cArg);
 		this.queryRoot = this.criteriaQuery.from(cArg);
+	}
+
+	/**
+	 * Sort the results of the find query by a given attribute
+	 * @param attribute the attribute to sort by
+	 * return a {@link SortingBuilder} instance for the given attribute
+	 */
+	public <Y> SortingBuilder<T, Y> sortBy(final SingularAttribute<? super T, Y> attribute) {
+		final FindBuilder<T> selfReference = this;
+		return new SortingBuilder<T, Y>() {
+			@Override
+			public FindBuilder<T> ascending() {
+				criteriaQuery.orderBy(criteriaBuilder.asc(queryRoot.get(attribute)));
+				return selfReference;
+			}
+			@Override
+			public FindBuilder<T> descending() {
+				criteriaQuery.orderBy(criteriaBuilder.desc(queryRoot.get(attribute)));
+				return selfReference;
+			}
+		};
 	}
 
 	public TypedQuery build() {
