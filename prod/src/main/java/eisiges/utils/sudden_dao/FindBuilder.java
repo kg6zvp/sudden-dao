@@ -1,4 +1,4 @@
-package eisiges.utils.genericentityejb;
+package eisiges.utils.sudden_dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
