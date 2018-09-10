@@ -1,8 +1,10 @@
 # Sudden DAO
 
+Quick and easy use of JPA with a DAO so instant it will shock you.
+
 [![pipeline status](https://gitlab.mccollum.enterprises/smccollum/genericentityejb/badges/master/pipeline.svg)](http://gitlab.mccollum.enterprises/smccollum/genericentityejb/pipelines)
 
-EJB abstraction for EntityManager in JPA 2 environments
+A DAO (Data Access Object) is almost always needed in a java project. Extend the `eisiges.sudden_dao.GenericPersistenceManager` class and annotate as desired and you're done.
 
 Manually composing JPQL queries is often annoying when we want to spend more time focusing on the business logic of an application. To that end, I created this simple project. It is several years old now and was cobbled together bit by bit over that time. It now contains some tests. Future versions should support the criteria API as well.
 
