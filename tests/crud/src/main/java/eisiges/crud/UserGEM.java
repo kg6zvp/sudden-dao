@@ -1,6 +1,6 @@
 package eisiges.crud;
 
-import eisiges.utils.genericentityejb.GenericPersistenceManager;
+import eisiges.utils.sudden_dao.GenericPersistenceManager;
 
 public class UserGEM extends GenericPersistenceManager<UserModel, Long> {
 	public UserGEM(){

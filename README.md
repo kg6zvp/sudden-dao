@@ -1,4 +1,4 @@
-# GenericEntityEJB
+# Sudden DAO
 
 [![pipeline status](https://gitlab.mccollum.enterprises/smccollum/genericentityejb/badges/master/pipeline.svg)](http://gitlab.mccollum.enterprises/smccollum/genericentityejb/pipelines)
 

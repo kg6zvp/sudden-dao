@@ -3,7 +3,7 @@
 	
 	<parent>
 		<groupId>eisiges.utils</groupId>
-		<artifactId>genericentityejb-root</artifactId>
+		<artifactId>sudden-dao-root</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
@@ -12,7 +12,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
-	<artifactId>genericentityejb</artifactId>
+	<artifactId>sudden-dao</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	
 	<dependencies>
