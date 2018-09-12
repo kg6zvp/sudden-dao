@@ -3,47 +3,72 @@
 Quick and easy use of JPA with a DAO so instant it will shock you.
 
 [![pipeline status](https://gitlab.mccollum.enterprises/smccollum/genericentityejb/badges/master/pipeline.svg)](http://gitlab.mccollum.enterprises/smccollum/genericentityejb/pipelines)
+[![license](https://img.shields.io/github/license/thorntail/thorntail.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-A DAO (Data Access Object) is almost always needed in a java project. Extend the `eisiges.sudden_dao.GenericPersistenceManager` class and annotate as desired and you're done.
-
-Manually composing JPQL queries is often annoying when we want to spend more time focusing on the business logic of an application. To that end, I created this simple project. It is several years old now and was cobbled together bit by bit over that time. It now contains some tests. Future versions should support the criteria API as well.
+A DAO (Data Access Object) is almost always needed in a java project. Extend the `eisiges.sudden_dao.GenericPersistenceManager` class and that's it.
 
 ## Use Cases
 
-1.) I want to query my database for all objects whose values match my object's non-null object member variables and get back a list. (Writing this kind of query for every single entity by hand is annoying)
+1. Query a database for a list of all objects whose values match an object's non-null object member variables
 
-To search for a Rock variable with it's color variable set to BLUE where my EJB which extends GenericEntityEJB is rockManager:
 ```java
 Rock keyRock = new Rock();
 keyRock.setColor(Color.BLUE);
-List<Rock> blueRocks = rockManager.getMatching(keyRock); //this assumes any other member variables in this class are null
+List<Rock> blueRocks = rockManager.getMatching(keyRock);
 ```
 
-2.) I want to retrieve an object's key //not as sure why you might want this
+2. Retrieve an object's primary key
+
 ```java
 rockManager.getId(myObject);
 ```
 
-3.) Generate a JPQL query from an object. Sometimes you know you will want to run a query frequently on a database. Incurring the overhead of invoking my query generator every time you want to hit the database is ridiculous. Simply inspect the lines in stdout containing `Composed query string:` if you want to see what query a given object will give you and write a function and/or create a named query. Good luck.
-
 ## Getting started
 
-1.) Create a new EJB which you would normally inject an EntityManager into which subclasses GenericPersistenceManager<T, K> (where T is the Type of class it will manage and K is the Type of your Entity's @Id field)
+1. Add sudden-dao to your project
 
-2.) Create a new public constructor in your EJB with a call to super() which passes in your Entity's Class:
+Maven:
+```xml
+		<dependency>
+			<groupId>es.eisig</groupId>
+			<artifactId>sudden-dao</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+```
 
-3.) (optional) Typically I mark such classes as @Local and inject them when needed, ending up like this:
+Gradle:
+```groovy
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	implementation 'es.eisig:sudden-dao:1.0.0-SNAPSHOT'
+}
+```
+
+2. Create a class extending `eisiges.sudden_dao.GenericPersistenceManager`
+
+3. Create an empty constructor which calls `super(Class<T> entityClass)`
+
+4. (optional) add additional methods
+
 ```java
-@Local // in case you've never seen this before, the import statement needs javax.ejb.Local
-public class UserBean extends GenericPersistenceManager<MyUser, Long> { // MyUser is the entity being managed and Long is the type of primary key
+@Local // javax.ejb.Local
+public class UserBean extends GenericPersistenceManager<MyUser, Long> { // MyUser: entity being managed, Long: type of primary key
 	public UserBean(){
 		super(MyUser.class);
+	}
+
+	public TypedQuery<MyUser> getByBirthdateAsc() {
+		return this.find().sortBy(MyUser_.birthdate).ascending().build();
 	}
 }
 ```
 
-The following functions are exposed by the GenericEntityEJB:
+The following functions are exposed by GenericPersistenceManager:
 
+```java
 boolean containsKey(K)
 
 T persist(T)
@@ -65,5 +90,5 @@ List<T> getAll()
 boolean isTableEmpty()
 
 List<T> getMatching(T)
-
+```
 
