@@ -1,4 +1,4 @@
-package eisiges.utils.sudden_dao;
+package eisiges.sudden_dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

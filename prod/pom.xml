@@ -2,18 +2,46 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>eisiges.utils</groupId>
+		<groupId>es.eisig</groupId>
 		<artifactId>sudden-dao-root</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<artifactId>sudden-dao</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>A JPA DAO so instant it will shock you</description>
+	<url>https://github.com/kg6zvp/genericentityejb</url>
+
+	<licenses>
+		<license>
+			<name>AL2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Sam McCollum</name>
+			<email>kg6zvp@gmail.com</email>
+			<organization>kg6zvp</organization>
+			<organizationUrl>https://kg6zvp.github.io/</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://github.com/kg6zvp/genericentityejb.git</connection>
+		<developerConnection>scm:git:https://gitlab.mccollum.enterprises/smccollum/genericentityejb.git</developerConnection>
+		<url>https://github.com/kg6zvp/genericentityejb/</url>
+	</scm>
 	
 	<dependencies>
 		<dependency>
@@ -40,7 +68,7 @@
 					<execution>
 						<id>attach-sources</id>
 						<goals>
-							<goal>jar</goal>
+							<goal>jar-no-fork</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -60,63 +88,37 @@
 		</plugins>
 	</build>
 
-	<distributionManagement>
-		<repository>
-			<id>internal</id>
-			<url>http://archiva.mccollum.enterprises/repository/internal/</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<url>http://archiva.mccollum.enterprises/repository/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
-	<repositories>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 		<repository>
-			<id>internal</id>
-			<name>Archiva Managed Internal Repository</name>
-			<url>http://archiva.mccollum.enterprises/repository/internal/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-		<repository>
-			<id>snapshots</id>
-			<name>Archiva Managed Snapshot Repository</name>
-			<url>http://archiva.mccollum.enterprises/repository/snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>internal</id>
-			<name>Archiva Managed Internal Repository</name>
-			<url>http://archiva.mccollum.enterprises/repository/internal/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>snapshots</id>
-			<name>Archiva Managed Snapshot Repository</name>
-			<url>http://archiva.mccollum.enterprises/repository/snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
+	</distributionManagement>
 </project>
