@@ -112,18 +112,18 @@ public class GenericPersistenceManager<T, K> {
 		em.remove(em.merge(data));
 	}
 	/**
-	 * Save a list of objects to the database
-	 * @param data {@link List} of objects to be saved
+	 * Save a collection of objects to the database
+	 * @param data {@link Collection} of objects to be saved
 	 */
-	public void saveAll(List<T> data){
+	public void saveAll(Collection<T> data){
 		for(T d : data)
 			save(d);
 	}
 	/**
-	 * Remove a list of objects from the database
-	 * @param data {@link List} of objects to be removed
+	 * Remove a collection of objects from the database
+	 * @param data {@link Collection} of objects to be removed
 	 */
-	public void removeAll(List<T> data){
+	public void removeAll(Collection<T> data){
 		for(T d : data)
 			remove(d);
 	}

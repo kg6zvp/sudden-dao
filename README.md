@@ -81,9 +81,9 @@ T get(K)
 
 void remove(T)
 
-void saveAll(List<T>)
+void saveAll(Collection<T>)
 
-void removeAll(List<T>)
+void removeAll(Collection<T>)
 
 List<T> getAll()
 
