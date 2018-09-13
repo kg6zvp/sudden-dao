@@ -17,9 +17,9 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>${project.groupId}:${project.artifactId}</name>
+	<name>Sudden DAO</name>
 	<description>A JPA DAO so instant it will shock you</description>
-	<url>https://github.com/kg6zvp/genericentityejb</url>
+	<url>https://github.com/kg6zvp/sudden-dao</url>
 
 	<licenses>
 		<license>
@@ -38,9 +38,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:https://github.com/kg6zvp/genericentityejb.git</connection>
+		<connection>scm:git:https://github.com/kg6zvp/sudden-dao.git</connection>
 		<developerConnection>scm:git:https://gitlab.mccollum.enterprises/smccollum/genericentityejb.git</developerConnection>
-		<url>https://github.com/kg6zvp/genericentityejb/</url>
+		<url>https://github.com/kg6zvp/sudden-dao/</url>
 	</scm>
 	
 	<dependencies>
