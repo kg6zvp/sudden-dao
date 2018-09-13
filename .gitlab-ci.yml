@@ -31,7 +31,7 @@ deploy:
     - cd gem
     - git config user.email "kg6zvp@gmail.com"
     - git config --global user.name "Sam McCollum"
-    - git remote add github "https://kg6zvp:$GITHUB_PERSONAL_ACCESS_TOKEN@github.com/kg6zvp/genericentityejb.git"
+    - git remote add github "https://kg6zvp:$GITHUB_PERSONAL_ACCESS_TOKEN@github.com/kg6zvp/sudden-dao.git"
     - git push --force github master
     - cd ..
     - rm -rf gem
