@@ -16,7 +16,7 @@ import org.junit.Before;
 @RunWith(ThorntailTestRunner.class)
 public class FindTest {
 	@Inject
-	UserGEM users;
+	UserModelDAO users;
 
 	@PersistenceContext
 	EntityManager em;
@@ -26,22 +26,6 @@ public class FindTest {
 		em.getTransaction().begin();
 		em.createQuery("DELETE FROM UserModel").executeUpdate();
 		em.getTransaction().commit();
-	}
-
-	@Test
-	@Transactional
-	public void testBasicFind() {
-		UserModel hmUser = UserModel
-		    .builder()
-		    .username("hmcgroin")
-		    .fullName("Holden McGroin")
-		    .birthDate(Calendar.getInstance())
-		    .build();
-		em.persist(hmUser);
-		em.flush();
-		em.clear();
-
-		assertTrue(users.find().build().setMaxResults(1).getSingleResult().equals(hmUser));
 	}
 
 	@Test
@@ -97,4 +81,3 @@ public class FindTest {
 		assertTrue(hb.equals(foundUsersDesc.get(2)));
 	}
 }
-

@@ -2,18 +2,18 @@ package eisiges.sudden_dao;
 
 /**
  * builds a sort
- * @param <T> This is the class of the entity in the query result
+ * @param <T> This is the class of the query builder
  * @param <Y> This is the type of the column the sort is based on
  */
 public interface SortingBuilder<T, Y> {
 	/**
 	 * sort ascending
-	 * @return a {@link FindBuilder} with the sort applied
+	 * @return a query builder with the sort applied
 	 */
-	FindBuilder<T> ascending();
+	T ascending();
 	/**
 	 * sort descending
-	 * @return a {@link FindBuilder} with the sort applied
+	 * @return a query builder with the sort applied
 	 */
-	FindBuilder<T> descending();
+	T descending();
 }

@@ -7,6 +7,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
+/**
+ * A class building a find query
+ * @author kg6zvp
+ * @param <T> The type of Entity being found
+ */
 public class FindBuilder<T> {
 	protected Class<T> cArg;
 	protected EntityManager em;
@@ -15,7 +20,7 @@ public class FindBuilder<T> {
 	protected CriteriaQuery<T> criteriaQuery;
 	protected Root<T> queryRoot;
 
-	FindBuilder(Class<T> cArg, EntityManager em) {
+	protected FindBuilder(Class<T> cArg, EntityManager em) {
 		this.cArg = cArg;
 		this.em = em;
 
@@ -29,9 +34,9 @@ public class FindBuilder<T> {
 	 * @param attribute the attribute to sort by
 	 * return a {@link SortingBuilder} instance for the given attribute
 	 */
-	public <Y> SortingBuilder<T, Y> sortBy(final SingularAttribute<? super T, Y> attribute) {
+	public <Y> SortingBuilder<FindBuilder<T>, Y> sortBy(final SingularAttribute<? super T, Y> attribute) {
 		final FindBuilder<T> selfReference = this;
-		return new SortingBuilder<T, Y>() {
+		return new SortingBuilder<FindBuilder<T>, Y>() {
 			@Override
 			public FindBuilder<T> ascending() {
 				criteriaQuery.orderBy(criteriaBuilder.asc(queryRoot.get(attribute)));
