@@ -32,7 +32,7 @@ Maven:
 		<dependency>
 			<groupId>es.eisig</groupId>
 			<artifactId>sudden-dao</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 ```
 
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'es.eisig:sudden-dao:1.0.0-SNAPSHOT'
+	implementation 'es.eisig:sudden-dao:1.0.0'
 }
 ```
 
