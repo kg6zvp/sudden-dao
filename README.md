@@ -39,7 +39,7 @@ Maven:
 Gradle:
 ```groovy
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
