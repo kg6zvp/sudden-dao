@@ -2,8 +2,9 @@
 
 Quick and easy use of JPA with a DAO so instant it will shock you.
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/es.eisig/sudden-dao.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22es.eisig%22%20AND%20a:%22sudden-dao%22)
 [![pipeline status](https://gitlab.mccollum.enterprises/smccollum/genericentityejb/badges/master/pipeline.svg)](http://gitlab.mccollum.enterprises/smccollum/genericentityejb/pipelines)
-[![license](https://img.shields.io/github/license/thorntail/thorntail.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 A DAO (Data Access Object) is almost always needed in a java project. Extend the `eisiges.sudden_dao.GenericPersistenceManager` class and that's it.
 
