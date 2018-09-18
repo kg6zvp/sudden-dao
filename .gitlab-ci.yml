@@ -7,7 +7,6 @@ before_script:
 stages:
   - build
   - test
-  - deploy
 
 build:
   stage: build
@@ -22,22 +21,6 @@ test:
   stage: test
   script:
     - mvn test
-
-deploy:
-  stage: deploy
-  script:
-    - echo "Run dep script here"
-    - git clone "$CI_REPOSITORY_URL" gem
-    - cd gem
-    - git config user.email "kg6zvp@gmail.com"
-    - git config --global user.name "Sam McCollum"
-    - git remote add github "https://kg6zvp:$GITHUB_PERSONAL_ACCESS_TOKEN@github.com/kg6zvp/sudden-dao.git"
-    - git push --force github master
-    - git push --tags github
-    - cd ..
-    - rm -rf gem
-  only:
-    - master
 
 after_script:
   - echo "End CI"
