@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>es.eisig</groupId>
 		<artifactId>sudden-dao-root</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<properties>
@@ -14,7 +14,7 @@
 	</properties>
 
 	<artifactId>sudden-dao</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Sudden DAO</name>

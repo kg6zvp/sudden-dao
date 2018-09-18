@@ -33,6 +33,7 @@ deploy:
     - git config --global user.name "Sam McCollum"
     - git remote add github "https://kg6zvp:$GITHUB_PERSONAL_ACCESS_TOKEN@github.com/kg6zvp/sudden-dao.git"
     - git push --force github master
+    - git push --tags github
     - cd ..
     - rm -rf gem
   only:
