@@ -16,5 +16,6 @@
 	<modules>
 		<module>crud</module>
 		<module>find</module>
+		<module>generator</module>
 	</modules>
 </project>

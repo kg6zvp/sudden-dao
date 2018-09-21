@@ -80,14 +80,6 @@ public class GenericPersistenceManager<T, K> {
 	}
 
 	/**
-	 * Create a {@link FindBuilder} instance for performing a find
-	 * @return a builder for a find query
-	 */
-	public FindBuilder<T> find() {
-		return this.find(cArg);
-	}
-
-	/**
 	 * Create a {@link FindBuilder} instance for performing a find with a given entity type
 	 * @param type the class of the entity to be found
 	 * @return a builder for a find query

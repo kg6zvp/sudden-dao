@@ -1,6 +1,5 @@
-package eisiges.find;
+package eisiges.generator;
 
-import eisiges.sudden_dao.GenerateDAO;
 import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,14 +13,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import eisiges.sudden_dao.GenerateDAO;
 
+@GenerateDAO
 @Entity
 @Builder
-@GenerateDAO
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"birthDate"})
-@ToString(exclude = {"birthDate"})
+@ToString
 public class UserModel {
 	@Id
 	@GeneratedValue
