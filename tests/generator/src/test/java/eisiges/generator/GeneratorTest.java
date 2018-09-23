@@ -17,6 +17,9 @@ public class GeneratorTest {
 	@Inject
 	UserModelDAO users;
 
+	@Inject
+	CustomEntityDAO customEntities;
+
 	@PersistenceContext
 	EntityManager em;
 
@@ -87,6 +90,11 @@ public class GeneratorTest {
 
 		UserModel found = users.getMatching(keyObject).get(0);
 		assertTrue(found.equals(it));
+	}
+
+	@Test
+	public void testGeneratedDaoHasCustomParent() {
+		assertEquals("Custom Method Result", customEntities.customMethod());
 	}
 }
 

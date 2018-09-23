@@ -7,6 +7,8 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
+
+import eisiges.sudden_dao.GenerateDAO;
 import eisiges.sudden_dao.GenericPersistenceManager;
 import static eisiges.sudden_dao.impl.AnnotationProcessingUtils.*;
 import java.io.IOException;
@@ -19,6 +21,8 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -86,8 +90,12 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 		    .addStatement("return new $T(em)", finderCN)
 		    .build();
 
+		AnnotationMirror daoAnnotation = getAnnotation(pe.getElementUtils().getAllAnnotationMirrors(k), GenerateDAO.class);
+		AnnotationValue customParentClass = getAnnotationValue(daoAnnotation, "parentClass");
+		ClassName daoParent = customParentClass == null ? ClassName.get(GenericPersistenceManager.class) : getClassNameFromFqtn(customParentClass.getValue().toString());
+		
 		TypeSpec daoSpec = TypeSpec.classBuilder(daoName)
-		    .superclass(ParameterizedTypeName.get(ClassName.get(GenericPersistenceManager.class), entityKlasse, primaryKeyKlasse))
+		    .superclass(ParameterizedTypeName.get(daoParent, entityKlasse, primaryKeyKlasse))
 		    .addModifiers(Modifier.PUBLIC)
 		    .addAnnotation(
 			AnnotationSpec
