@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  * Intended to be subclassed for use as a persistence manager. It contains all boilerplate code for a class used to manage persistent Entities.
@@ -65,7 +65,6 @@ public class GenericPersistenceManager<T, K> {
 		return data;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public K getId(T data) {
 		return (K)em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(data);
 	}
@@ -81,11 +80,12 @@ public class GenericPersistenceManager<T, K> {
 
 	/**
 	 * Create a {@link FindBuilder} instance for performing a find with a given entity type
+	 * @param <X> the type of the entity being found
 	 * @param type the class of the entity to be found
 	 * @return a builder for a find query
 	 */
 	public <X> FindBuilder<X> find(Class<X> type) {
-		return new FindBuilder<X>(type, em);
+		return new FindBuilder<>(type, em);
 	}
 
 	/**
@@ -123,27 +123,25 @@ public class GenericPersistenceManager<T, K> {
 	 * Retrieve a list of {@link T}, all of the ones in the database
 	 * @return {@link List} of all {@link T} in the database
 	 */
-	@SuppressWarnings("unchecked")
 	public List<T> getAll(){
-		Query q = getSelectAllQuery();
-		return (List<T>)q.getResultList();
+		TypedQuery<T> q = getSelectAllQuery();
+		return q.getResultList();
 	}
 	
 	/**
 	 * Checks whether or not the table is empty
 	 * @return true if empty, false if not
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean isTableEmpty(){
 		List<T> results = getSelectAllQuery().setMaxResults(2).getResultList();
 		return (results.size() < 1);
 	}
 	/**
 	 * private helper method
-	 * @return Query for selecting all
+	 * @return TypedQuery for selecting all
 	 */
-	private Query getSelectAllQuery(){
-		return em.createQuery(getSelectAllQueryString());
+	private TypedQuery<T> getSelectAllQuery(){
+		return em.createQuery(getSelectAllQueryString(), cArg);
 	}
 	/**
 	 * private helper method
@@ -158,7 +156,6 @@ public class GenericPersistenceManager<T, K> {
 	 * @param keyObject the object to match
 	 * @return {@link List} of objects which match the keyObject
 	 */
-	@SuppressWarnings("unchecked")
 	public List<T> getMatching(T keyObject){
 		Field[] members = cArg.getDeclaredFields();
 		Map<String, Object> importantFields = new TreeMap<>();
@@ -170,8 +167,6 @@ public class GenericPersistenceManager<T, K> {
 					if(val != null && !Modifier.isFinal(member.getModifiers()) && !Modifier.isStatic(member.getModifiers()) && !(val instanceof Collection))
 						importantFields.put(member.getName(), val);
 				}
-			} catch (SecurityException e) {
-				e.printStackTrace();
 			} catch (Exception e){
 				e.printStackTrace();
 			}
@@ -186,8 +181,8 @@ public class GenericPersistenceManager<T, K> {
 			}
 			++run;
 		}
-		System.out.printf("Composed query string:\n%s\n", queryString);
-		Query q = em.createQuery(queryString);
+		//System.out.printf("Composed query string:\n%s\n", queryString);
+		TypedQuery<T> q = em.createQuery(queryString, cArg);
 		for(Map.Entry<String, Object> field : importantFields.entrySet()){
 			q.setParameter(field.getKey(), field.getValue());
 		}
@@ -205,8 +200,6 @@ public class GenericPersistenceManager<T, K> {
 					if(val != null)
 						importantFields.add(member);
 				}
-			} catch (SecurityException e) {
-				e.printStackTrace();
 			} catch (Exception e){
 				e.printStackTrace();
 			}
