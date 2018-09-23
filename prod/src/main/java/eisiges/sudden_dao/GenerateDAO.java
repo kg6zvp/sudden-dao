@@ -14,4 +14,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GenerateDAO {
 	//public String className() default "";
+	Class<? extends GenericPersistenceManager> parentClass() default GenericPersistenceManager.class;
 }

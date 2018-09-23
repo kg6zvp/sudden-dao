@@ -1,9 +1,19 @@
 package eisiges.sudden_dao.impl;
 
 import eisiges.sudden_dao.GenerateDAO;
+
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map.Entry;
+
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import com.squareup.javapoet.ClassName;
 
 /**
  * @author kg6zvp
@@ -67,5 +77,27 @@ class AnnotationProcessingUtils {
 			output = String.join(".", output, tokens[i]);
 		}
 		return output;
+	}
+
+	static AnnotationMirror getAnnotation(List<? extends AnnotationMirror> li, Class<? extends Annotation> anno) {
+		for(AnnotationMirror am : li) {
+			if(anno.getName().equals(am.getAnnotationType().toString())) {
+				return am;
+			}
+		}
+		return null;
+	}
+
+	static AnnotationValue getAnnotationValue(AnnotationMirror am, String key) {
+		for(Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : am.getElementValues().entrySet()) {
+			if(key.equals(entry.getKey().getSimpleName().toString())) {
+				return entry.getValue();
+			}
+		}
+		return null;
+	}
+
+	static ClassName getClassNameFromFqtn(String fqtn) {
+		return ClassName.get(getPackageOf(fqtn), getSimpleNameOf(fqtn));
 	}
 }
