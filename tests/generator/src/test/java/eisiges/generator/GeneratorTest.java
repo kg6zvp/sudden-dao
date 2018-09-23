@@ -24,11 +24,10 @@ public class GeneratorTest {
 	EntityManager em;
 
 	@Before
+	@Transactional
 	public void beforeEach() {
-		em.getTransaction().begin();
 		em.createQuery("DELETE FROM UserModel").executeUpdate();
 		em.createQuery("DELETE FROM UngeneratedModel").executeUpdate();
-		em.getTransaction().commit();
 	}
 
 	@Test(expected = ClassNotFoundException.class)
