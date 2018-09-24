@@ -65,14 +65,16 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 	}
 
 	private void buildClass(Element k) {
-		String daoName = k.getSimpleName() + DAO_NAME_SUFFIX;
-		String fullyQualifiedDaoName = String.join(".", getPackageDeclaration(k), daoName);
-
 		TypeSpec finder = FindBuilderGenerator.generateBuilder(pe, k); // always generate a builder
 
 		if (!wantsDao(k)) { // if it doesn't want a DAO, okay
 			return;
 		}
+		
+		AnnotationMirror daoAnnotation = getAnnotation(pe.getElementUtils().getAllAnnotationMirrors(k), GenerateDAO.class);
+		AnnotationValue customDaoName = getAnnotationValue(daoAnnotation, "daoName");
+		String daoName = customDaoName == null ? k.getSimpleName() + DAO_NAME_SUFFIX : customDaoName.getValue().toString();
+		String fullyQualifiedDaoName = String.join(".", getPackageDeclaration(k), daoName);
 
 		ClassName entityKlasse = ClassName.get(getPackageDeclaration(k), k.getSimpleName().toString());
 		ClassName primaryKeyKlasse = ClassName.get(getPackageOf(getPrimaryKeyType(k)), getSimpleNameOf(getPrimaryKeyType(k)));
@@ -90,7 +92,6 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 		    .addStatement("return new $T(em)", finderCN)
 		    .build();
 
-		AnnotationMirror daoAnnotation = getAnnotation(pe.getElementUtils().getAllAnnotationMirrors(k), GenerateDAO.class);
 		AnnotationValue customParentClass = getAnnotationValue(daoAnnotation, "parentClass");
 		ClassName daoParent = customParentClass == null ? ClassName.get(GenericPersistenceManager.class) : getClassNameFromFqtn(customParentClass.getValue().toString());
 		

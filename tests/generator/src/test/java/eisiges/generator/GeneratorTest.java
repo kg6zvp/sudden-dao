@@ -37,12 +37,17 @@ public class GeneratorTest {
 	}
 
 	@Test
-	public void testAlwaysGenerateQueryBuilder() throws ClassNotFoundException { //don't always generate QueryBuilder
-		/*String ungeneratedClassFullyQualified = "eisiges.generator.UngeneratedModel";
-		GeneratorTest.class.getClassLoader().loadClass(ungeneratedClassFullyQualified + "QueryBuilder");*/
+	public void testAlwaysGenerateQueryBuilder() throws ClassNotFoundException {
+		String ungeneratedClassFullyQualified = "eisiges.generator.UngeneratedModel";
+		GeneratorTest.class.getClassLoader().loadClass(ungeneratedClassFullyQualified + "QueryBuilder");
 		
 		String userClassFullyQualified = "eisiges.generator.UserModel";
 		GeneratorTest.class.getClassLoader().loadClass(userClassFullyQualified + "QueryBuilder");
+	}
+
+	@Test
+	public void testCustomDaoName() throws ClassNotFoundException {
+		GeneratorTest.class.getClassLoader().loadClass("eisiges.generator.MyCustomDao");
 	}
 
 	@Test
