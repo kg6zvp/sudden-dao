@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Calendar;
+
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -48,6 +50,12 @@ public class GeneratorTest {
 	@Test
 	public void testCustomDaoName() throws ClassNotFoundException {
 		GeneratorTest.class.getClassLoader().loadClass("eisiges.generator.MyCustomDao");
+	}
+
+	@Test
+	public void testHasAnnotations() {
+		assertNotNull(UserModelDAO.class.getAnnotation(ApplicationScoped.class));
+		assertNotNull(UserModelDAO.class.getAnnotation(Deprecated.class));
 	}
 
 	@Test
