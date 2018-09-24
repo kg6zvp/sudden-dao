@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GenerateDAO {
-	//public String className() default "";
-	Class<? extends GenericPersistenceManager> parentClass() default GenericPersistenceManager.class;
+	public String daoName() default "";
+	public Class<? extends GenericPersistenceManager> parentClass() default GenericPersistenceManager.class;
 }
