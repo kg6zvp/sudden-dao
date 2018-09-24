@@ -15,7 +15,12 @@ import lombok.Setter;
 import lombok.ToString;
 import eisiges.sudden_dao.GenerateDAO;
 
-@GenerateDAO
+import javax.enterprise.context.ApplicationScoped;
+
+@GenerateDAO(annotations = {
+	ApplicationScoped.class,
+	Deprecated.class
+})
 @Entity
 @Builder
 @NoArgsConstructor

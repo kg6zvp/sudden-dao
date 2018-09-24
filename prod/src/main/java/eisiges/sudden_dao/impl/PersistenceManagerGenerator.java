@@ -13,6 +13,7 @@ import eisiges.sudden_dao.GenericPersistenceManager;
 import static eisiges.sudden_dao.impl.AnnotationProcessingUtils.*;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 import java.util.Set;
 import javax.annotation.Generated;
 import javax.annotation.processing.AbstractProcessor;
@@ -95,14 +96,23 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 		AnnotationValue customParentClass = getAnnotationValue(daoAnnotation, "parentClass");
 		ClassName daoParent = customParentClass == null ? ClassName.get(GenericPersistenceManager.class) : getClassNameFromFqtn(customParentClass.getValue().toString());
 		
-		TypeSpec daoSpec = TypeSpec.classBuilder(daoName)
+		TypeSpec.Builder daoBuilder = TypeSpec.classBuilder(daoName)
 		    .superclass(ParameterizedTypeName.get(daoParent, entityKlasse, primaryKeyKlasse))
-		    .addModifiers(Modifier.PUBLIC)
+		    .addModifiers(Modifier.PUBLIC);
+		
+		AnnotationValue customDaoAnnotations = getAnnotationValue(daoAnnotation, "annotations");
+		if(customDaoAnnotations != null) {
+			for(Object a : (List<Object>)customDaoAnnotations.getValue()){
+				daoBuilder.addAnnotation(getClassNameFromFqtn(a.toString().replaceAll("\\.class$", ""))); // replace .class ending with ""
+			}
+		}
+		
+		TypeSpec daoSpec = daoBuilder
 		    .addAnnotation(
-			AnnotationSpec
-			    .builder(Generated.class)
-			    .addMember("value", "{\"" + PersistenceManagerGenerator.class.getName() + "\"}")
-			    .build())
+				AnnotationSpec
+					.builder(Generated.class)
+					.addMember("value", "{\"" + PersistenceManagerGenerator.class.getName() + "\"}")
+					.build())
 		    .addMethod(constructor)
 		    .addMethod(findMethod)
 		    .build();
