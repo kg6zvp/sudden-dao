@@ -65,6 +65,7 @@ public class GenericPersistenceManager<T, K> {
 		return data;
 	}
 	
+	@SuppressWarnings("unchecked") // yes it's an unchecked cast, but we know what we're doing
 	public K getId(T data) {
 		return (K)em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(data);
 	}
@@ -208,7 +209,7 @@ public class GenericPersistenceManager<T, K> {
 	}
 	
 	public List<Object> getPropertyList(T keyObject){
-		List list = new LinkedList();
+		List<Object> list = new LinkedList<>();
 		List<Field> importantFields = getNonNullFields(keyObject);
 		if(importantFields.size() > 0){
 			Field fiq = importantFields.get(0);
