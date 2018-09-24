@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GenerateDAO {
-	public Class<? extends Annotation>[] annotations() default {};
+	public Class<? extends Annotation>[] annotations() default { /*javax.ejb.Stateless.class*/ };
 	public String daoName() default "";
 	public Class<? extends GenericPersistenceManager> parentClass() default GenericPersistenceManager.class;
 }

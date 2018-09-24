@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 
+import javax.annotation.Generated;
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -53,9 +55,18 @@ public class GeneratorTest {
 	}
 
 	@Test
-	public void testHasAnnotations() {
-		assertNotNull(UserModelDAO.class.getAnnotation(ApplicationScoped.class));
-		assertNotNull(UserModelDAO.class.getAnnotation(Deprecated.class));
+	public void testHasCustomAnnotations() {
+		assertNotNull("UserModelDAO should have @ApplicationScoped annotation", UserModelDAO.class.getAnnotation(ApplicationScoped.class));
+		assertNotNull("UserModelDAO should have @Deprecated annotation", UserModelDAO.class.getAnnotation(Deprecated.class));
+
+		assertNull("UserModelDAO should not have default @Stateless annotation", UserModelDAO.class.getAnnotation(Stateless.class));
+	}
+
+	@Test
+	public void testHasDefaultStatelessAnnotation() {
+		assertNotNull("CustomEntityDAO should have default @Stateless annotation", CustomEntityDAO.class.getAnnotation(Stateless.class));
+		
+		assertNotNull("MyCustomDao should have default @Stateless annotation", MyCustomDao.class.getAnnotation(Stateless.class));
 	}
 
 	@Test

@@ -101,7 +101,9 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 		    .addModifiers(Modifier.PUBLIC);
 		
 		AnnotationValue customDaoAnnotations = getAnnotationValue(daoAnnotation, "annotations");
-		if(customDaoAnnotations != null) {
+		if(customDaoAnnotations == null) {
+			daoBuilder.addAnnotation(ClassName.get("javax.ejb", "Stateless"));
+		} else {
 			for(Object a : (List<Object>)customDaoAnnotations.getValue()){
 				daoBuilder.addAnnotation(getClassNameFromFqtn(a.toString().replaceAll("\\.class$", ""))); // replace .class ending with ""
 			}
