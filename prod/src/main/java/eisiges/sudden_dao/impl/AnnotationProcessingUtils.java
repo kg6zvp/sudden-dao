@@ -2,18 +2,28 @@ package eisiges.sudden_dao.impl;
 
 import eisiges.sudden_dao.GenerateDAO;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.annotation.Generated;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.tools.FileObject;
 
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 
 /**
  * @author kg6zvp
@@ -52,6 +62,10 @@ class AnnotationProcessingUtils {
 			return f.asType().toString();
 		}
 		return "";
+	}
+
+	static TypeName getFieldType(Element field) {
+		return ClassName.get(field.asType());
 	}
 
 	static String getPackageDeclaration(Element k) {
@@ -99,5 +113,33 @@ class AnnotationProcessingUtils {
 
 	static ClassName getClassNameFromFqtn(String fqtn) {
 		return ClassName.get(getPackageOf(fqtn), getSimpleNameOf(fqtn));
+	}
+
+	static TypeSpec writeJavaFile(ProcessingEnvironment pe, String packageName, TypeSpec type) {
+		String fullyQualifiedClassName = String.join(".", packageName, type.name);
+
+		JavaFile javaFile = JavaFile
+		    .builder(packageName, type)
+		    .skipJavaLangImports(true)
+		    .indent("	")
+		    .build();
+		try {
+			FileObject fo = pe.getFiler().createSourceFile(fullyQualifiedClassName);
+			Writer w = fo.openWriter();
+			javaFile.writeTo(w);
+			w.flush();
+			w.close();
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
+
+		return type;
+	}
+	
+	static <T> AnnotationSpec getGeneratedAnnotation(Class<T> generator) {
+		return AnnotationSpec
+			.builder(Generated.class)
+			.addMember("value", "{\"" + generator.getName() + "\"}")
+			.build();
 	}
 }

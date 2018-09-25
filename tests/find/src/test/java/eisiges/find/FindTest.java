@@ -73,6 +73,8 @@ public class FindTest {
 		assertTrue(hb.equals(foundUsersAsc.get(0)));
 		assertTrue(it.equals(foundUsersAsc.get(1)));
 		assertTrue(wf.equals(foundUsersAsc.get(2)));
+
+		//List<UserModel> foundUserCustDesc = users.find().sortBy().fullName().descending().build().getResultList();
 		
 		List<UserModel> foundUsersDesc = users.find().sortBy(UserModel_.fullName).descending().build().getResultList();
 		assertTrue(wf.equals(foundUsersDesc.get(0)));

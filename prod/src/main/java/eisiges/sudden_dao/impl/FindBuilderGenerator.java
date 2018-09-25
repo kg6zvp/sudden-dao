@@ -48,22 +48,7 @@ public class FindBuilderGenerator {
 			    .build())
 		    .addMethod(constructor)
 		    .build();
-
-		JavaFile javaFile = JavaFile
-		    .builder(packageName, finder)
-		    .skipJavaLangImports(true)
-		    .indent("	")
-		    .build();
-		try {
-			FileObject fo = pe.getFiler().createSourceFile(fullyQualifiedClassName);
-			Writer w = fo.openWriter();
-			javaFile.writeTo(w);
-			w.flush();
-			w.close();
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
-		}
-
-		return finder;
+		
+		return writeJavaFile(pe, packageName, finder);
 	}
 }

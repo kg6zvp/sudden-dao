@@ -66,6 +66,15 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 	}
 
 	private void buildClass(Element k) {
+		/*
+		 * Generate Attribute Selector
+		 */
+		AttribSelectorGenerator attrGen = new AttribSelectorGenerator(pe);
+		TypeSpec entityAttrSelector = attrGen.generateInterface(k);
+
+		/*
+		 * Generate FindBuilder
+		 */
 		TypeSpec finder = FindBuilderGenerator.generateBuilder(pe, k); // always generate a builder
 
 		if (!wantsDao(k)) { // if it doesn't want a DAO, okay
@@ -122,14 +131,6 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 		    .addMethod(findMethod)
 		    .build();
 
-		try {
-			FileObject fileObject = pe.getFiler().createSourceFile(fullyQualifiedDaoName);
-			Writer w = fileObject.openWriter();
-			JavaFile javaFile = JavaFile.builder(getPackageDeclaration(k), daoSpec).indent("		").build();
-			javaFile.writeTo(w);
-			w.flush();
-			w.close();
-		} catch (IOException ex) {
-		}
+		writeJavaFile(pe, getPackageDeclaration(k), daoSpec);
 	}
 }

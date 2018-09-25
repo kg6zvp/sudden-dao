@@ -141,14 +141,14 @@ public class GenericPersistenceManager<T, K> {
 	 * private helper method
 	 * @return TypedQuery for selecting all
 	 */
-	private TypedQuery<T> getSelectAllQuery(){
+	public TypedQuery<T> getSelectAllQuery(){
 		return em.createQuery(getSelectAllQueryString(), cArg);
 	}
 	/**
 	 * private helper method
 	 * @return Query string for select all
 	 */
-	private String getSelectAllQueryString(){
+	public String getSelectAllQueryString(){
 		return "SELECT data FROM "+tableName+" data";
 	}
 	
