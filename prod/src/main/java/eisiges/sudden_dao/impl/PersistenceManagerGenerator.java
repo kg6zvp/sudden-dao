@@ -104,7 +104,10 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 		if(customDaoAnnotations == null) {
 			daoBuilder.addAnnotation(ClassName.get("javax.ejb", "Stateless"));
 		} else {
-			for(Object a : (List<Object>)customDaoAnnotations.getValue()){
+			@SuppressWarnings("unchecked") // it will always be a list because of the API being used
+			List<Object> listDaoAnnotations = (List<Object>)customDaoAnnotations.getValue();
+			
+			for(Object a : listDaoAnnotations){
 				daoBuilder.addAnnotation(getClassNameFromFqtn(a.toString().replaceAll("\\.class$", ""))); // replace .class ending with ""
 			}
 		}

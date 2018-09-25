@@ -31,8 +31,9 @@ public class FindBuilder<T> {
 
 	/**
 	 * Sort the results of the find query by a given attribute
+	 * @param <Y> type of attribute being sorted by
 	 * @param attribute the attribute to sort by
-	 * return a {@link SortingBuilder} instance for the given attribute
+	 * @return a {@link SortingBuilder} instance for the given attribute
 	 */
 	public <Y> SortingBuilder<FindBuilder<T>, Y> sortBy(final SingularAttribute<? super T, Y> attribute) {
 		final FindBuilder<T> selfReference = this;
