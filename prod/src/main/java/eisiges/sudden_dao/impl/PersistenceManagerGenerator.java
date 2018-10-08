@@ -125,7 +125,7 @@ public class PersistenceManagerGenerator extends AbstractProcessor {
 		try {
 			FileObject fileObject = pe.getFiler().createSourceFile(fullyQualifiedDaoName);
 			Writer w = fileObject.openWriter();
-			JavaFile javaFile = JavaFile.builder(getPackageDeclaration(k), daoSpec).indent("		").build();
+			JavaFile javaFile = JavaFile.builder(getPackageDeclaration(k), daoSpec).indent("	").build();
 			javaFile.writeTo(w);
 			w.flush();
 			w.close();

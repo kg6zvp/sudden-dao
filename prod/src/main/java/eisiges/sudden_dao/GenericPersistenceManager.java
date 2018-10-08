@@ -125,7 +125,7 @@ public class GenericPersistenceManager<T, K> {
 	 * @return {@link List} of all {@link T} in the database
 	 */
 	public List<T> getAll(){
-		TypedQuery<T> q = getSelectAllQuery();
+		TypedQuery<T> q = getAllQuery();
 		return q.getResultList();
 	}
 	
@@ -134,30 +134,40 @@ public class GenericPersistenceManager<T, K> {
 	 * @return true if empty, false if not
 	 */
 	public boolean isTableEmpty(){
-		List<T> results = getSelectAllQuery().setMaxResults(2).getResultList();
+		List<T> results = getAllQuery().setMaxResults(2).getResultList();
 		return (results.size() < 1);
 	}
+
 	/**
-	 * private helper method
+	 * Retrieve a query for all the objects in the database
 	 * @return TypedQuery for selecting all
 	 */
-	private TypedQuery<T> getSelectAllQuery(){
+	public TypedQuery<T> getAllQuery(){
 		return em.createQuery(getSelectAllQueryString(), cArg);
 	}
 	/**
-	 * private helper method
+	 * helper method to get the select all query string
 	 * @return Query string for select all
 	 */
-	private String getSelectAllQueryString(){
+	protected String getSelectAllQueryString(){
 		return "SELECT data FROM "+tableName+" data";
 	}
-	
+
 	/**
-	 * Retrieve a class from the database whose non-null instance variables match those of the class in the database
+	 * Query a database for a {@link List} of all objects whose values match the keyObject's non-null object member variables
 	 * @param keyObject the object to match
 	 * @return {@link List} of objects which match the keyObject
 	 */
-	public List<T> getMatching(T keyObject){
+	public List<T> getMatching(T keyObject) {
+		return getMatchingQuery(keyObject).getResultList();
+	}
+	
+	/**
+	 * Query a database for all objects whose values match the keyObject's non-null object member variables
+	 * @param keyObject the object to match
+	 * @return {@link TypedQuery} of objects which match the keyObject
+	 */
+	public TypedQuery<T> getMatchingQuery(T keyObject){
 		Field[] members = cArg.getDeclaredFields();
 		Map<String, Object> importantFields = new TreeMap<>();
 		for(Field member : members){
@@ -172,22 +182,22 @@ public class GenericPersistenceManager<T, K> {
 				e.printStackTrace();
 			}
 		}
-		String queryString = getSelectAllQueryString();
+		StringBuilder queryBuilder = new StringBuilder(getSelectAllQueryString());
 		int run = 0;
 		for(Map.Entry<String, Object> field : importantFields.entrySet()){
 			if(run == 0){
-				queryString += String.format(" where data.%s = :%s", field.getKey(), field.getKey());
+				queryBuilder.append(String.format(" where data.%s = :%s", field.getKey(), field.getKey()));
 			}else{
-				queryString += String.format(" and data.%s = :%s", field.getKey(), field.getKey());
+				queryBuilder.append(String.format(" and data.%s = :%s", field.getKey(), field.getKey()));
 			}
 			++run;
 		}
 		//System.out.printf("Composed query string:\n%s\n", queryString);
-		TypedQuery<T> q = em.createQuery(queryString, cArg);
+		TypedQuery<T> q = em.createQuery(queryBuilder.toString(), cArg);
 		for(Map.Entry<String, Object> field : importantFields.entrySet()){
 			q.setParameter(field.getKey(), field.getValue());
 		}
-		return q.getResultList();
+		return q;
 	}
 	
 	private List<Field> getNonNullFields(T keyObject){
