@@ -1,5 +1,13 @@
 # Changelog
 
+### 1.0.0-SNAPSHOT
+
+CRUD:
+- get a `TypedQuery<T>` with `getAllQuery()` and `getMatchingQuery(T keyObject)` (especially useful with the streaming API)
+
+`find()`: enhancing the criteria API one step at a time
+- `sortBy(Model_.attribute).ascending()` allows you to write a one-liner instead of a complex criteria query
+
 ### 1.0.0
 
 CRUD:
