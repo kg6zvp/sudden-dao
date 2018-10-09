@@ -15,7 +15,7 @@ build:
   stage: build
   script:
     - apk update && apk add openssl ca-certificates git
-    - curl 'https://gist.githubusercontent.com/kg6zvp/4887a5d266f37d11853e78df35ad7c28/raw/3581075404ebaa42b7b7ef878ee08ed679ae2758/built-ttv4.sh'|bash -
+    - curl 'https://gist.githubusercontent.com/kg6zvp/4887a5d266f37d11853e78df35ad7c28/raw/b6675478d01f26c042f1e89ad823535244fddb6a/build-ttv4.sh'|bash -
     - mvn package -DskipTests
   artifacts:
     paths:
