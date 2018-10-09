@@ -71,5 +71,44 @@ public class CrudTest {
 		UserModel found = users.getMatching(keyObject).get(0);
 		assertTrue(found.equals(it));
 	}
+
+	@Test
+	@Transactional
+	public void testContainsKey() {
+		UserModel bo = UserModel.builder()
+		    .username("boverflow")
+		    .fullName("Buffer Overflow")
+		    .birthDate(Calendar.getInstance())
+		    .build();
+		em.persist(bo);
+		em.flush();
+
+		assertTrue(users.containsKey(bo.getId()));
+	}
+
+	@Test
+	@Transactional
+	public void testContainsKeyShouldBeFalse() {
+		UserModel cc = UserModel.builder()
+		    .username("ccase")
+		    .fullName("CamelCase")
+		    .birthDate(Calendar.getInstance())
+		    .build();
+		em.persist(cc);
+		UserModel bo = UserModel.builder()
+		    .username("boverflow")
+		    .fullName("Buffer Overflow")
+		    .birthDate(Calendar.getInstance())
+		    .build();
+		em.persist(bo);
+		em.flush();
+
+		Long ccid = cc.getId();
+
+		em.remove(cc);
+		em.flush();
+
+		assertFalse(users.containsKey(ccid));
+	}
 }
 
